@@ -1,0 +1,11 @@
+{
+  "scripts": {
+    "start": "node fs",
+    "dev": "nodemon fs"
+  },
+  "dependencies": {
+    "express": "^4.18.1",
+    "loadsh-get": "^1.0.1",
+    "nodemon": "^2.0.19"
+  }
+}
