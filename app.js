@@ -24,7 +24,7 @@ MongoClient.connect(url,function(err,db){
     // })
 
     //insertOne i.e to insert one document
-    // var myObj = {name:"Company Inc", address:"Chikago"}
+    // var myObj = {name:"Company Inc", address:"Chikago", age:12}
     // dbo.collection("customers").insertOne(myObj,function(err, res){
     //     if(err) throw err;
     //     console.log("1 document inserted")
@@ -97,10 +97,10 @@ MongoClient.connect(url,function(err,db){
     // FILTER----
 
     // filter: we can filter the result by using a query object
-    // var query = {address:"Banglore"}
+    // var query = {name:"Medini K A"}
 
     // Filter With Regular Expressions
-    // var query = {address:/^B/}
+    // var query = {name:/^Comp/}
 
     // dbo.collection("customers").find(query).toArray((err,result)=>{
     //     if (err) throw err;
@@ -128,14 +128,50 @@ MongoClient.connect(url,function(err,db){
     // to delete one document (only the first occurrence is deleted)
     // dbo.collection("customers").deleteOne(myquery, function(err, obj) {
 
-    var myquery = { address: /^C/ };
-    // to Delete all documents where address starts with the letter "O" 
-    dbo.collection("customers").deleteMany(myquery, function(err, obj) {
-        
+    // var myquery = { address: /^C/ };
+    // // // // to Delete all documents where address starts with the letter "O" 
+    // dbo.collection("customers").deleteMany(myquery, function(err, obj) {
+
+    //     if (err) throw err;
+    //     console.log("document(s) deleted");
+    //     db.close();
+    // });
+
+    // to delete a collection
+    // dbo.collection("customers").drop(function(err, delOK) {
+    //     if (err) throw err;
+    //     if (delOK) console.log("Collection deleted");
+    //     db.close();
+    //   });
+
+    // dbo.dropCollection("customers", function(err, delOK) {
+    //     if (err) throw err;
+    //     if (delOK) console.log("Collection deleted");
+    //     db.close();
+    //   });
+
+
+    // Update Document
+
+    // var myquery = { address: "Sagara" };
+
+    // var newvalues = { $set: {name: "Gayathri Ashok", address: "Sagara" } };
+    // var newvalues = { $set: { address: "Nittur" } };                         //Update Only Specific Fields
+
+    // var myquery = {name: /^A/ };
+    // var newvalues = {$set: {name: "Agaa"} };
+
+
+    // dbo.collection("customers").updateOne(myquery, newvalues, function(err, res) {
+    //     if (err) throw err;
+    //     // console.log("1 document updated");
+    //     console.log(res.result.nModified + " document(s) updated");                 //update many documents
+    //     db.close();
+    // });
+    // Limit the resul
+    dbo.collection("customers").find().limit(3).toArray(function(err, result) {
         if (err) throw err;
-        // console.log("1 document deleted");
-        console.log(obj.result.n);
-        // console.log(obj.result+ " document(s) deleted")                      //delete many
+        console.log(result);
         db.close();
     });
 })
