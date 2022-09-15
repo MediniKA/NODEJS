@@ -55,7 +55,7 @@ async function start(){
     // const user = await User.findOne({name:'Medini'})
     // const user = await User.findByName('Medini')
     // const user = await User.find().byName('Medini')
-    const user = await User.findOne({name:"Medini", email:"medini@gmail.com"})
+    const user = await User.update({name:"Medini", email:"medini@gmail.com"})
     await user.save()
     console.log(user)
     //   user.sayHi()
