@@ -1,121 +1,91 @@
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
+const user = require('./user');
 
-mongoose.connect('mongodb://localhost/student')
-
-
-
-// const Student = require("./studSchema")
+mongoose.connect('mongodb://localhost:27017/student');
 
 
+const studentSchema = new mongoose.Schema({
+    name :{
+        type : String,
+        required : true
+    },
+    usn :{
+        type : String,
+        required : true
+    },
+    dob :{
+        type : Date,
+        required : true,
+    },
+    email :{
+        type : String,
+        required : true
+    },
+    phone_no :{
+        type : Number,
+        required : true
+    },
+    mainAddress :{
+        type: [{
+        address:String,
+    }],
+    validate: [arrayLimit, 'exceeds the limit of 5']                //to limit number of entries in address 
+}
+});
 
-// studentCreation()
+function arrayLimit(val) {
+    return val.length <= 5;
+  }
 
-// deleteAddress()
 
-// async function studentCreation(){
+// studentSchema.virtual('addressCount').get(function () {
+//     return this.address.length;
+// });
 
-//     try{
 
-//         const student = await Student.insertMany([
+const Student = mongoose.model('Student',studentSchema);
 
-//             {
+// Student.schema.path('mainAddress.address').validate(function(value) {
+//     return value.length <= 2;
+//   }, 'Max limit Reached');
+  
+//   const opts = { runValidators: true };
 
-//                 name : "Sameeksha",
+run()
+async function run(){
+    try{
+        const student = await Student.create({
+            name:'Varshini',
+            usn: "4MK18cs010",
+            dob :'2000-12-31',
+            email :'varshini@gmail.com',
+            phone_no :9663865628,
+            mainAddress:[{_id: new mongoose.Types.ObjectId(),address:"Hosanagara"}]
+        })
 
-//                 usn : "4mk18cs015",
+        
+// to insert the address
+        // const updatedSrtudent = await Student.updateOne({_id:"6321a0082e800bae301c04d1" }, {
+        //     $push: {
+        //       "mainAddress": {address: "Mysore"}
+        //     }
+        //   });
+        // // },opts);                                                                         //to limit number of entries in address
 
-//                 dob : 25-06-2000,
 
-//                 email : "sameeksha@gmail.com",
+// to delete the address
+        // const updatedSrtudent = await Student.updateOne({ _id: '6321a0082e800bae301c04d1' }, { 
+        //         "$pull": { 
+        //             "mainAddress": { "address": 'Mysore'} }});
 
-//                 phone_no : 9945713577,
 
-//                 address :
+// to edit the address
+        // const updatedStudent = await Student.updateOne({'mainAddress._id': '6321ad5598ad395b8962f329'}, {'$set': {
+        //     'mainAddress.$.address': 'updated item2',
+        // }})
 
-//                 [{
-
-//                     state : "Karnataka",
-
-//                     city : "Shimoga",
-
-//                     street1 : "Sagar",
-
-//                     pincode : 577401
-
-//                 }]
-
-//             },  
-//             {
-
-//                 name : "Medini",
-
-//                 usn : "4mk18cs010",
-
-//                 dob : 11-05-2000,
-
-//                 email : "medini@gmail.com",
-
-//                 phone_no : 8546912225,
-
-//                 address : [{
-
-//                     state : "Karnataka",
-
-//                     city : "Mysore",
-
-//                     street1 : "Mandya",
-
-//                     street2 : "Maddur",
-
-//                     pincode : 577401  
-
-//                 }]
-
-//             },
-
-//     ])
-
-//     console.log("User inserted !!")
-
-//     }
-
-//     catch(error){
-
-//         console.log(error)
-
-//     }
-
-// }
-// async function updateAddress(){
-
-//     try{
-
-//         const findStudent = await Student.find({
-
-//             name : "Medini"
-
-//         })
-
-//     }
-
-// }
-// async function deleteAddress(){
-
-//     try{
-
-//         const deleteStudent = await Student.findOneAndDelete({
-
-//             name : "Medini"
-
-//         })
-
-//         console.log("Deleted the user " + deleteStudent)
-
-//     }catch(error){
-
-//         console.log(error.message)
-
-//     }
-
-// }
-
+    }catch (e){
+        console.log(e.message)
+        // console.log(e.errors.age)
+    }
+}
